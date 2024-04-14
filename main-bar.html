@@ -10,6 +10,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/randomcolor"></script>
     <script src="https://cdn.jsdelivr.net/npm/randomcolor@0.6.1/dist/randomColor.min.js"></script>
+
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -17,12 +18,14 @@
         padding: 0;
         width: 1920px;
         height: 1080px;
-        background-color: #ffffff00;
+        background-color: #00000000;
       }
 
       .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         max-width: 1550px;
-        max-height: 700px;
         margin: 20px auto;
         padding: 20px;
         background-color: #1b070714;
@@ -31,6 +34,7 @@
       }
 
       .chart-container {
+        max-height: 500px;
         position: relative;
         margin-bottom: 20px;
       }
@@ -39,17 +43,20 @@
         font-size: 24px;
         font-weight: bold;
         color: #ffffff;
-        margin-bottom: 20px;
+        margin-bottom: 50px;
         text-align: center;
       }
 
       .user-data {
         display: flex;
+        justify-content: center;
+        align-items: center;
         flex-wrap: wrap;
         gap: 20px;
-        padding-top: 20px;
-        width: 1880px;
+        padding-top: 10px;
+        width: 70%;
         justify-content: center;
+        margin: 20px auto;
       }
 
       .user {
@@ -69,6 +76,11 @@
       .user img:hover {
         border-color: rgba(0, 0, 0, 0.1);
       }
+      .user-info {
+        font-size: 16px;
+        color: #ffffff;
+        margin-top: 5px; /* Adjust margin as needed */
+      }
 
       .user-name {
         font-size: 18px;
@@ -81,7 +93,7 @@
     <div class="container">
       <div class="chart-container">
         <h2 class="chart-title">Bigg Boss Votes</h2>
-        <canvas id="userDataChart" width="700" height="300"></canvas>
+        <canvas id="userDataChart" width="900" height="350"></canvas>
       </div>
     </div>
     <div id="userData" class="user-data"></div>
@@ -121,83 +133,73 @@
           i++;
         }
 
-        updateChart(userNames, userVotes, randomColors);
-        updateUserData(userNames, userVotes, userPics);
+        renderChart(userNames, userVotes, randomColors);
+        renderUserData(userNames, userVotes, userPics);
       });
 
-      // Function to update the chart
-      function updateChart(userNames, userVotes, randomColors) {
-        const chart = Chart.getChart("userDataChart");
-        if (chart) {
-          chart.data.labels = userNames;
-          chart.data.datasets[0].data = userVotes;
-          chart.data.datasets[0].backgroundColor = randomColors;
-          chart.data.datasets[0].borderColor = randomColors;
-          chart.update();
-        } else {
-          const ctx = document.getElementById("userDataChart").getContext("2d");
-          new Chart(ctx, {
-            type: "bar",
-            data: {
-              labels: userNames,
-              datasets: [
-                {
-                  label: "Votes",
-                  data: userVotes,
-                  backgroundColor: randomColors,
-                  borderColor: randomColors,
-                  borderWidth: 1,
-                  borderRadius: 20,
+      function renderChart(userNames, userVotes, randomColors) {
+        const ctx = document.getElementById("userDataChart").getContext("2d");
+        const myChart = new Chart(ctx, {
+          type: "bar",
+          data: {
+            labels: userNames,
+            datasets: [
+              {
+                label: "Votes",
+                data: userVotes,
+                backgroundColor: randomColors, // Use the same random colors
+                borderColor: randomColors,
+                borderWidth: 1,
+                borderRadius: 20, // Add rounded corners
+              },
+            ],
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true,
+                grid: {
+                  display: false, // Remove grid lines for Y-axis
                 },
-              ],
-            },
-            options: {
-              scales: {
-                y: {
-                  beginAtZero: true,
-                  grid: {
-                    display: false,
-                  },
-                  ticks: {
-                    display: false,
-                  },
-                },
-                x: {
-                  display: true,
+                ticks: {
+                  display: false, // Hide Y-axis ticks
                 },
               },
-              plugins: {
-                datalabels: {
-                  anchor: "end",
-                  align: "end",
-                  formatter: function (value, context) {
-                    const index = context.dataIndex;
-                    const percentage =
-                      (userVotes[index] /
-                        userVotes.reduce((acc, curr) => acc + curr, 0)) *
-                      100;
-                    return percentage.toFixed(2) + "%";
-                  },
-                  color: "#333",
-                  font: {
-                    size: "18",
-                    weight: "bold",
-                  },
-                },
-                legend: {
-                  display: false,
-                },
+              x: {
+                display: true, // Hide X-axis
               },
             },
-          });
-        }
+            plugins: {
+              datalabels: {
+                anchor: "end",
+                align: "end",
+                formatter: function (value, context) {
+                  const index = context.dataIndex;
+                  const percentage =
+                    (userVotes[index] /
+                      userVotes.reduce((acc, curr) => acc + curr, 0)) *
+                    100;
+                  return percentage.toFixed(2) + "%";
+                },
+                color: "#333", // Color of the text
+                font: {
+                  size: "18", // Font size
+                  weight: "bold", // Font weight
+                },
+              },
+              legend: {
+                display: false, // Hide legend
+              },
+            },
+          },
+        });
       }
 
-      // Function to update the user data display
-      function updateUserData(userNames, userVotes, userPics) {
+      function renderUserData(userNames, userVotes, userPics) {
         const userDataContainer = document.getElementById("userData");
-        userDataContainer.innerHTML = "";
+        userDataContainer.innerHTML = ""; // Clear previous data
 
+        // Calculate total number of votes
         const totalVotes = userVotes.reduce((acc, curr) => acc + curr, 0);
 
         for (let i = 0; i < userNames.length; i++) {
@@ -208,7 +210,7 @@
           const img = document.createElement("img");
           img.src = userPics[i].pic;
           img.alt = "User Image";
-          img.style.backgroundColor = userPics[i].color;
+          img.style.backgroundColor = userPics[i].color; // Use the color generated for the user pic
           imgContainer.appendChild(img);
           userDiv.appendChild(imgContainer);
 
@@ -220,6 +222,7 @@
           const userInfo = document.createElement("p");
           const votePercentage = (userVotes[i] / totalVotes) * 100;
           userInfo.textContent = ` votes (${votePercentage.toFixed(2)}%)`;
+          userInfo.classList.add("user-info"); // Add a class to the userInfo element
           userDiv.appendChild(userInfo);
 
           userDataContainer.appendChild(userDiv);
