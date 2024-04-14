@@ -8,10 +8,39 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
     <script src="https://cdn.jsdelivr.net/npm/randomcolor"></script>
     <style>
+      /* CSS Styles */
       body {
-        width: 1920px; /* Set body frame width */
-        height: 1080px; /* Set body frame height */
-        margin: 0 auto; /* Center the body frame */
+        width: 1920px; /* Set body width to 100% */
+        height: 1080px; /* Set body height to 100% */
+        margin: 0; /* Remove default margin */
+        padding: 0; /* Remove default padding */
+        font-family: Arial, sans-serif; /* Set font family */
+        background-color: #f5f5f5; /* Set background color */
+        justify-content: center;
+      }
+
+      /* Centering content */
+      .container {
+        max-width: 1200px; /* Set maximum width */
+        margin: 0 auto; /* Center the container horizontally */
+        padding: 20px; /* Add padding */
+      }
+
+      /* Styling the chart container */
+      #chartContainer {
+        padding-top: 100px;
+        margin-top: 50px;
+        max-width: 1200px;
+        max-height: 800px; /* Adjust max width of the chart container */
+        margin: 20px auto; /* Center the chart container */
+      }
+
+      /* Styling the user pictures container */
+      #userPics {
+        margin: 20px; /* Add top margin */
+        display: flex; /* Use flexbox for layout */
+        justify-content: center; /* Center items horizontally */
+        flex-wrap: wrap; /* Wrap items to the next row if needed */
       }
 
       .user-pic {
@@ -23,13 +52,33 @@
         justify-content: center;
         align-items: center;
         margin: 5px;
+        border: 2px solid #fff; /* Add border with white color */
       }
 
       .user-pic img {
-        width: 60px;
-        height: 60px;
+        width: 70px;
+        height: 70px;
         border-radius: 50%;
         object-fit: cover;
+      }
+
+      /* Styling the total votes section */
+      #totalVotes {
+        font-size: 20px; /* Increase font size */
+        font-weight: bold; /* Add bold font weight */
+        color: #333; /* Change text color */
+        margin-top: 20px; /* Add top margin */
+      }
+
+      /* Media query for responsiveness */
+      @media (max-width: 768px) {
+        .container {
+          padding: 10px; /* Adjust padding for smaller screens */
+        }
+
+        #chartContainer {
+          max-width: 100%; /* Set chart container width to 100% for smaller screens */
+        }
       }
     </style>
   </head>
