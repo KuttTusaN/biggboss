@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>View 3 HTML Web Pages</title>
+    <style>
+      body {
+        width: 100%S;
+        height: 1080px;
+      }
+      iframe {
+        width: 1920px;
+        height: 1080px;
+        border: none;
+        background-image: url(https://www.teahub.io/photos/full/328-3284654_christian-backgrounds-worship-backgrounds-wallpapers-praise-and-worship.jpg);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        align-items: center;
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <iframe
+      src="https://raw.githack.com/KuttTusaN/biggboss/main/chart.html"
+      id="iframe1"></iframe>
+    <iframe
+      src="https://raw.githack.com/KuttTusaN/biggboss/main/total-vote.html"
+      id="iframe2"></iframe>
+    <iframe
+      src="https://raw.githack.com/KuttTusaN/biggboss/main/main-bar.html"
+      id="iframe3"></iframe>
+    <iframe
+      src="https://raw.githack.com/KuttTusaN/biggboss/main/user-percentage.html"
+      id="iframe4"></iframe>
+
+    <script>
+      const iframes = document.querySelectorAll("iframe");
+      let currentFrame = 0;
+
+      function showNextFrame() {
+        iframes[currentFrame].style.display = "none";
+        currentFrame = (currentFrame + 1) % iframes.length;
+        iframes[currentFrame].style.display = "block";
+
+        const duration = currentFrame === iframes.length - 1 ? 30000 : 10000; // 30 seconds for the last iframe, 10 seconds for others
+        setTimeout(showNextFrame, duration);
+      }
+
+      window.onload = showNextFrame;
+    </script>
+  </body>
+</html>
